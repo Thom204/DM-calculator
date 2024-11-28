@@ -1,4 +1,4 @@
-El programa incluye las sigueintes operaciones.
+El programa incluye las siguientes operaciones.
 
 Maximo comun divisor (iterativo).
 
