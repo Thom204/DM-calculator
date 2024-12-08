@@ -1,11 +1,22 @@
+#include <cmath>
 #include<iostream>
 #include <type_traits>
 
-int mod(int a, int b) {return (((a%b)+b)%b);}
+long mod(long a, long b) {return (((a%b)+b)%b);}
 
-int mcd(int a, int b){
+bool isPrime(int p){
+	int n= std::sqrt(p);
+	for(int i=2; i<=n; i++){
+		if(p%i==0){
+			return false;
+		}
+	}
+	return true;
+}
+
+long mcd(long a, long b){
 	while (b>0) {
-		int r= mod(a,b);
+		long r= mod(a,b);
 		a=b;
 		b=r;
 	}
@@ -22,24 +33,24 @@ int mcdr(int a, int b) {
 	}
 }
 
-void  bezoutIdentity(int arr[], int a, int b) {
-	int s1=1;
-	int t1=0;
-	int s=0;
-	int t=1;
+void  bezoutIdentity(long arr[], long a, long b) {
+	long s1=1;
+	long t1=0;
+	long s=0;
+	long t=1;
 
 	while (b>0) {
-		int r= mod(a,b);
-		int q= a/b;
+		long r= mod(a,b);
+		long q= a/b;
 
 		a=b;
 		b=r;
 
-		int sAux = s1;
+		long sAux = s1;
 		s1= s;
 		s= sAux- q*s;
 
-		int tAux = t1;
+		long tAux = t1;
 		t1=t;
 		t= tAux- q*t;
 	}
@@ -48,10 +59,26 @@ void  bezoutIdentity(int arr[], int a, int b) {
 	arr[2]= t1;
 }
 
-int inversemod(int a, int n){
-	int arr[3];
+long mpow(long x, int p, int z){
+	int rslt= 1;
+	x= mod(x, z);
+	if(x==0){return 0;}
+
+	while(p>0){
+		if(p%2==1){
+			rslt= mod((rslt*x),z);
+		}
+		int auxp= p/2;
+		p= auxp;
+		x= mod((x*x),z);
+	}
+	return rslt;
+}
+
+long inverseMod(long a, long n){
+	long arr[3];
 	bezoutIdentity(arr, a, n);
-	int b= arr[1];
+	long b= arr[1];
 	return mod(b,n);
 }
 
@@ -65,7 +92,7 @@ int main(){
 		int a;
 		int b;
 		int m;
-		int arr[3];
+		long arr[3];
 		int choice;
 
 		cout<<"opciones: "<<endl;	
@@ -73,6 +100,7 @@ int main(){
 		cout<<"  2. calculadora recursiva de mcd"<<endl;
 		cout<<"  3. identidad de bezout"<<endl;
 		cout<<"  4. inverso modular"<<endl;
+		cout<<"  5. Exponenciacion modular"<<endl;
 		cout<<"  0. salir"<<endl;
 		cin>>choice;
 
@@ -113,9 +141,20 @@ int main(){
 				cin>>a;
 				cout<<"inserte valor n"<<endl;
 				cin>>b;
-				m= inversemod(a,b);
+				m= inverseMod(a,b);
 				cout<<"el inverso de "<<a<<" modulo "<<b<<" es "<<m<<endl;
-				cout<<a<<"*"<<m<<"="<< a*m<<"mod "<<b<<"="<<mod(a,b)<<endl;
+				cout<<a<<"*"<<m<<"="<< a*m<<"mod "<<b<<"="<<mcd(a,b)<<endl;
+				break;
+
+			case 5:
+				cout<<"Esta funcion calcula expresiones de la forma b^p mod n"<<endl;
+				cout<<"inserte la base b"<<endl;
+				cin>>a;
+				cout<<"inserte el exponente p"<<endl;
+				cin>>b;
+				cout<<"inserte el modulo m"<<endl;
+				cin>>m;
+				cout<<a<<"^"<<b<<" mod "<<m<<" = "<<mpow(a, b, m)<<endl;
 				break;
 
 			default:
