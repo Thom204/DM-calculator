@@ -8,5 +8,7 @@ Identidad de Bezout.
 
 Calculo del inverso modular.
 
+Exponenciación modular.
 
-interfaz de consola
+
+interfaz de consola.
